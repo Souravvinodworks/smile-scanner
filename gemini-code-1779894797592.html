@@ -1,3 +1,14 @@
+To integrate your logo seamlessly into the sleek, matte aesthetic of the app, we need to place it at the very top of the main container. This ensures your brand is front and center during both the intro phase and the live scanning phase.
+
+I have set the logo to a "medium" width (about 200 pixels) so it looks premium and proportionate without overwhelming the camera scanner on mobile screens.
+
+### Important Setup Step
+
+Because you are now using an image file, **you must ensure that your HTML file and the image file (`BP_Logomain.png`) are saved in the exact same folder** on your computer or in your GitHub repository. If they aren't in the same folder, the code won't be able to find the image, and it will show a broken icon.
+
+Here is the updated code. Copy and paste this over your current `index.html` file:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -238,4 +249,120 @@
             video.srcObject = stream;
             
             video.onloadedmetadata = () => {
-                video
+                video.play();
+                captureBtn.innerText = "Scan Smile";
+                captureBtn.disabled = false;
+            };
+        } catch (err) {
+            // Error Handling for Desktop Testing / Denied Permissions
+            captureBtn.innerText = "Camera Blocked (Security)";
+            captureBtn.style.backgroundColor = "#D32F2F"; 
+            alert("Camera Blocked!\n\nYour browser blocked the camera. Modern browsers require a secure web link (HTTPS) for cameras to work, or you may need to allow camera permissions in your browser settings.");
+        }
+    }
+
+    function runCameraAnalysis() {
+        camCanvas.width = video.videoWidth;
+        camCanvas.height = video.videoHeight;
+        camCtx.drawImage(video, 0, 0, camCanvas.width, camCanvas.height);
+        
+        video.style.display = 'none';
+        camCanvas.style.display = 'block';
+        captureBtn.disabled = true;
+        captureBtn.innerText = "Analyzing Shade...";
+        scannerLine.style.display = 'block';
+
+        setTimeout(() => {
+            const boxW = camCanvas.width * 0.30; 
+            const boxH = camCanvas.height * 0.12; 
+            const startX = (camCanvas.width - boxW) / 2;
+            const startY = (camCanvas.height - boxH) / 2;
+            extractColorSmart(camCtx, startX, startY, boxW, boxH);
+        }, 2000); 
+    }
+
+    // --- SHARED ANALYSIS ENGINE ---
+    function extractColorSmart(context, x, y, width, height) {
+        const pixelData = context.getImageData(x, y, width, height).data;
+        let pixels = [];
+        
+        for (let i = 0; i < pixelData.length; i += 4) {
+            let r = pixelData[i], g = pixelData[i+1], b = pixelData[i+2];
+            let luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+            pixels.push({r, g, b, luminance});
+        }
+        
+        pixels.sort((a, b) => a.luminance - b.luminance);
+        
+        let startIndex = Math.floor(pixels.length * 0.25);
+        let endIndex = Math.floor(pixels.length * 0.75);
+        let rTotal = 0, gTotal = 0, bTotal = 0, count = 0;
+        
+        for(let i = startIndex; i < endIndex; i++) {
+            rTotal += pixels[i].r; gTotal += pixels[i].g; bTotal += pixels[i].b;
+            count++;
+        }
+        
+        const [h, s, l] = rgbToHsl(Math.round(rTotal/count), Math.round(gTotal/count), Math.round(bTotal/count));
+        renderResults(h, s, l);
+    }
+
+    function renderResults(h, s, l) {
+        stopCamera();
+        showView('results');
+
+        if (l < 40 && s < 20) {
+            document.getElementById('mainResult').innerText = "Needs Light";
+            document.getElementById('recommendationText').innerText = "Too dark! Try facing a bright window for accurate results.";
+        } 
+        else if (s >= 25 && h > 20 && h < 60) {
+            document.getElementById('mainResult').innerText = "Yellow";
+            document.getElementById('recommendationText').innerText = "Professional A3 shade. Gentle care prevents plaque buildup beautifully.";
+        }
+        else if (l >= 72 && s <= 22) {
+            document.getElementById('mainResult').innerText = "Bright White";
+            document.getElementById('recommendationText').innerText = "Luminous B1 shade. Stunning enamel! Keep up the great work.";
+        } 
+        else {
+            document.getElementById('mainResult').innerText = "Natural Tone";
+            document.getElementById('recommendationText').innerText = "Healthy A2 shade. A perfectly natural and beautiful smile.";
+        }
+    }
+
+    function rgbToHsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) { h = s = 0; } 
+        else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+        return [h * 360, s * 100, l * 100];
+    }
+
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        video.style.display = 'block';
+        camCanvas.style.display = 'none';
+        scannerLine.style.display = 'none';
+    }
+
+    function resetApp() {
+        stopCamera();
+        showView('intro');
+    }
+</script>
+</body>
+</html>
+
+```
