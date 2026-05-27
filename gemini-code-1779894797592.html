@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bristle+ | Smile Shade Analysis</title>
+    <style>
+        /* Modern Minimalism & Premium Matte Aesthetic */
+        :root {
+            --primary-bg: #FAFAFA;
+            --surface-color: #FFFFFF;
+            --text-main: #111111;
+            --text-secondary: #666666;
+            --border-radius: 12px;
+            --btn-dark: #1A1A1A;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: var(--surface-color);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.03);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Brand Logo */
+        .brand-logo {
+            max-width: 220px; /* Medium size */
+            height: auto;
+            margin: 0 auto 25px auto;
+            display: block;
+        }
+
+        /* View States */
+        #introView, #cameraView, #resultsView {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+        
+        #introView { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin: 0 0 10px 0;
+        }
+        
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 35px;
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            margin-bottom: 15px;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .btn-primary { background-color: var(--btn-dark); color: #FFFFFF; }
+        .btn-primary:hover { background-color: #000000; transform: scale(1.01); }
+        
+        /* Media Container */
+        .media-container {
+            position: relative;
+            width: 100%;
+            border-radius: var(--border-radius);
+            background-color: #000;
+            aspect-ratio: 3/4; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Camera Specifics */
+        #cameraCanvas { 
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 2; display: none; 
+        }
+        
+        /* MEDIUM SIZED GUIDE BOX */
+        .guide-box {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30%; 
+            height: 12%; 
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+            z-index: 3; pointer-events: none;
+        }
+
+        .scanner-line {
+            position: absolute;
+            top: 0; bottom: 0; left: 0;
+            width: 3px; background-color: #FFF;
+            box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.8);
+            z-index: 4; display: none;
+            animation: scan 1.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes scan { 0% { left: 0%; } 100% { left: calc(100% - 3px); } }
+
+        /* Results */
+        .main-result {
+            font-size: 46px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin: 0 0 12px 0;
+            line-height: 1.1;
+        }
+
+        .recommendation {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .reset-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <img src="BP_Logomain.png" alt="Bristle+ Logo" class="brand-logo">
+
+    <div id="introView">
+        <h1>Professional Shade Analysis</h1>
+        <p class="subtitle">Discover your smile's natural tone securely on your device.</p>
+        
+        <button class="btn btn-primary" onclick="initCamera()">Start Camera</button>
+    </div>
+
+    <div id="cameraView">
+        <div class="media-container">
+            <video id="cameraFeed" autoplay playsinline></video>
+            <canvas id="cameraCanvas"></canvas>
+            <div class="guide-box" id="guideBox"></div>
+            <div class="scanner-line" id="scannerLine"></div>
+        </div>
+        <button class="btn btn-primary" id="captureBtn" onclick="runCameraAnalysis()">Scan Smile</button>
+        <div class="reset-link" onclick="resetApp()">Cancel</div>
+    </div>
+
+    <div id="resultsView">
+        <h2 class="main-result" id="mainResult"></h2>
+        <p class="recommendation" id="recommendationText"></p>
+        <span class="reset-link" onclick="resetApp()">Analyze Another</span>
+    </div>
+
+</div>
+
+<script>
+    // Elements
+    const views = {
+        intro: document.getElementById('introView'),
+        camera: document.getElementById('cameraView'),
+        results: document.getElementById('resultsView')
+    };
+    
+    const video = document.getElementById('cameraFeed');
+    const camCanvas = document.getElementById('cameraCanvas');
+    const camCtx = camCanvas.getContext('2d', { willReadFrequently: true });
+    const captureBtn = document.getElementById('captureBtn');
+    const scannerLine = document.getElementById('scannerLine');
+    let stream = null;
+
+    function showView(viewName) {
+        Object.values(views).forEach(v => v.style.display = 'none');
+        views[viewName].style.display = 'block';
+    }
+
+    // --- CAMERA LOGIC ---
+    async function initCamera() {
+        showView('camera');
+        captureBtn.innerText = "Requesting Camera...";
+        captureBtn.style.backgroundColor = "var(--btn-dark)";
+        captureBtn.disabled = true;
+        
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            video.srcObject = stream;
+            
+            video.onloadedmetadata = () => {
+                video
