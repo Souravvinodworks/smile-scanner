@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bristle+ | Smile Shade Analysis</title>
     <style>
+        /* Modern Minimalism & Premium Matte Aesthetic */
         :root {
             --primary-bg: #FAFAFA;
             --surface-color: #FFFFFF;
@@ -38,6 +39,7 @@
             box-sizing: border-box;
         }
 
+        /* Brand Logo */
         .brand-logo {
             max-width: 220px; 
             height: auto;
@@ -45,6 +47,7 @@
             display: block;
         }
 
+        /* View States */
         #introView, #cameraView, #resultsView {
             display: none;
             animation: fadeIn 0.4s ease-in;
@@ -57,60 +60,137 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; margin: 0 0 10px 0; }
-        p.subtitle { color: var(--text-secondary); font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
+        /* Typography */
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin: 0 0 10px 0;
+        }
+        
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 35px;
+            line-height: 1.5;
+        }
 
+        /* Buttons */
         .btn {
-            width: 100%; padding: 16px; border: none; border-radius: 8px;
-            font-size: 15px; font-weight: 600; cursor: pointer;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
             transition: transform 0.2s ease, background 0.2s ease;
-            margin-bottom: 15px; display: block; box-sizing: border-box;
+            margin-bottom: 15px;
+            display: block;
+            box-sizing: border-box;
         }
 
         .btn-primary { background-color: var(--btn-dark); color: #FFFFFF; }
         .btn-primary:hover { background-color: #000000; transform: scale(1.01); }
         
+        /* Media Container */
         .media-container {
-            position: relative; width: 100%; border-radius: var(--border-radius);
-            background-color: #000; aspect-ratio: 3/4; display: flex;
-            align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden;
+            position: relative;
+            width: 100%;
+            border-radius: var(--border-radius);
+            background-color: #000;
+            aspect-ratio: 3/4; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
         }
 
-        video { width: 100%; height: 100%; object-fit: cover; }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
+        /* Camera Specifics */
         #cameraCanvas { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: 2; display: none; 
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 2; display: none; 
         }
         
+        /* MEDIUM SIZED GUIDE BOX */
         .guide-box {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 30%; height: 12%; border: 2px solid rgba(255, 255, 255, 0.9);
-            border-radius: 8px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30%; 
+            height: 12%; 
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
             z-index: 3; pointer-events: none;
         }
 
         .scanner-line {
-            position: absolute; top: 0; bottom: 0; left: 0; width: 3px; background-color: #FFF;
-            box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.8); z-index: 4; display: none;
+            position: absolute;
+            top: 0; bottom: 0; left: 0;
+            width: 3px; background-color: #FFF;
+            box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.8);
+            z-index: 4; display: none;
             animation: scan 1.2s ease-in-out infinite alternate;
         }
 
         @keyframes scan { 0% { left: 0%; } 100% { left: calc(100% - 3px); } }
 
-        .main-result { font-size: 46px; font-weight: 700; letter-spacing: -1.5px; margin: 0 0 12px 0; line-height: 1.1; }
-        .recommendation { font-size: 16px; color: var(--text-secondary); margin: 0; font-weight: 400; line-height: 1.4; }
-        .reset-link { display: inline-block; margin-top: 30px; color: var(--text-main); font-size: 14px; font-weight: 500; text-decoration: underline; cursor: pointer; }
+        /* Results */
+        .main-result {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin: 0 0 12px 0;
+            line-height: 1.1;
+        }
+
+        .recommendation {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .reset-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .disclaimer {
+            font-size: 11px;
+            color: #999;
+            margin-top: 25px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    
     <img src="BP_Logomain.png" alt="Bristle+ Logo" class="brand-logo">
 
     <div id="introView">
         <h1>Professional Shade Analysis</h1>
-        <p class="subtitle">Discover your smile's natural tone securely on your device.</p>
+        <p class="subtitle">Discover your smile's natural tone securely on your device. For best results, face a window for bright, natural light.</p>
+        
         <button class="btn btn-primary" onclick="initCamera()">Start Camera</button>
     </div>
 
@@ -129,11 +209,19 @@
         <h2 class="main-result" id="mainResult"></h2>
         <p class="recommendation" id="recommendationText"></p>
         <span class="reset-link" onclick="resetApp()">Analyze Another</span>
+        <p class="disclaimer">Note: Lighting heavily impacts camera sensors. This tool is for cosmetic reference.</p>
     </div>
+
 </div>
 
 <script>
-    const views = { intro: document.getElementById('introView'), camera: document.getElementById('cameraView'), results: document.getElementById('resultsView') };
+    // Elements
+    const views = {
+        intro: document.getElementById('introView'),
+        camera: document.getElementById('cameraView'),
+        results: document.getElementById('resultsView')
+    };
+    
     const video = document.getElementById('cameraFeed');
     const camCanvas = document.getElementById('cameraCanvas');
     const camCtx = camCanvas.getContext('2d', { willReadFrequently: true });
@@ -141,71 +229,154 @@
     const scannerLine = document.getElementById('scannerLine');
     let stream = null;
 
-    function showView(viewName) { Object.values(views).forEach(v => v.style.display = 'none'); views[viewName].style.display = 'block'; }
+    function showView(viewName) {
+        Object.values(views).forEach(v => v.style.display = 'none');
+        views[viewName].style.display = 'block';
+    }
 
+    // --- CAMERA LOGIC ---
     async function initCamera() {
-        showView('camera'); captureBtn.innerText = "Requesting Camera..."; captureBtn.style.backgroundColor = "var(--btn-dark)"; captureBtn.disabled = true;
+        showView('camera');
+        captureBtn.innerText = "Requesting Camera...";
+        captureBtn.style.backgroundColor = "var(--btn-dark)";
+        captureBtn.disabled = true;
+        
         try {
             stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
             video.srcObject = stream;
-            video.onloadedmetadata = () => { video.play(); captureBtn.innerText = "Scan Smile"; captureBtn.disabled = false; };
+            
+            video.onloadedmetadata = () => {
+                video.play();
+                captureBtn.innerText = "Scan Smile";
+                captureBtn.disabled = false;
+            };
         } catch (err) {
-            captureBtn.innerText = "Camera Blocked (Security)"; captureBtn.style.backgroundColor = "#D32F2F"; 
-            alert("Camera Blocked! Modern browsers require a secure web link (HTTPS) or camera permissions in settings.");
+            captureBtn.innerText = "Camera Blocked (Security)";
+            captureBtn.style.backgroundColor = "#D32F2F"; 
+            alert("Camera Blocked!\n\nYour browser blocked the camera. Modern browsers require a secure web link (HTTPS) for cameras to work.");
         }
     }
 
     function runCameraAnalysis() {
-        camCanvas.width = video.videoWidth; camCanvas.height = video.videoHeight;
+        camCanvas.width = video.videoWidth;
+        camCanvas.height = video.videoHeight;
         camCtx.drawImage(video, 0, 0, camCanvas.width, camCanvas.height);
-        video.style.display = 'none'; camCanvas.style.display = 'block';
-        captureBtn.disabled = true; captureBtn.innerText = "Analyzing Shade..."; scannerLine.style.display = 'block';
+        
+        video.style.display = 'none';
+        camCanvas.style.display = 'block';
+        captureBtn.disabled = true;
+        captureBtn.innerText = "Analyzing Shade...";
+        scannerLine.style.display = 'block';
+
         setTimeout(() => {
-            const boxW = camCanvas.width * 0.30, boxH = camCanvas.height * 0.12; 
-            const startX = (camCanvas.width - boxW) / 2, startY = (camCanvas.height - boxH) / 2;
+            const boxW = camCanvas.width * 0.30; 
+            const boxH = camCanvas.height * 0.12; 
+            const startX = (camCanvas.width - boxW) / 2;
+            const startY = (camCanvas.height - boxH) / 2;
             extractColorSmart(camCtx, startX, startY, boxW, boxH);
         }, 2000); 
     }
 
+    // --- SHARED ANALYSIS ENGINE ---
     function extractColorSmart(context, x, y, width, height) {
         const pixelData = context.getImageData(x, y, width, height).data;
         let pixels = [];
+        
         for (let i = 0; i < pixelData.length; i += 4) {
             let r = pixelData[i], g = pixelData[i+1], b = pixelData[i+2];
-            pixels.push({r, g, b, luminance: 0.299 * r + 0.587 * g + 0.114 * b});
+            let luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+            pixels.push({r, g, b, luminance});
         }
+        
         pixels.sort((a, b) => a.luminance - b.luminance);
-        let startIndex = Math.floor(pixels.length * 0.25), endIndex = Math.floor(pixels.length * 0.75);
+        
+        // Remove glare (top 25%) and shadow (bottom 25%)
+        let startIndex = Math.floor(pixels.length * 0.25);
+        let endIndex = Math.floor(pixels.length * 0.75);
         let rTotal = 0, gTotal = 0, bTotal = 0, count = 0;
-        for(let i = startIndex; i < endIndex; i++) { rTotal += pixels[i].r; gTotal += pixels[i].g; bTotal += pixels[i].b; count++; }
+        
+        for(let i = startIndex; i < endIndex; i++) {
+            rTotal += pixels[i].r; gTotal += pixels[i].g; bTotal += pixels[i].b;
+            count++;
+        }
+        
         const [h, s, l] = rgbToHsl(Math.round(rTotal/count), Math.round(gTotal/count), Math.round(bTotal/count));
         renderResults(h, s, l);
     }
 
+    // --- 5-TIER VITA LOGIC ENGINE ---
     function renderResults(h, s, l) {
-        stopCamera(); showView('results');
-        if (l < 40 && s < 20) {
-            document.getElementById('mainResult').innerText = "Needs Light"; document.getElementById('recommendationText').innerText = "Too dark! Try facing a bright window for accurate results.";
-        } else if (s >= 25 && h > 20 && h < 60) {
-            document.getElementById('mainResult').innerText = "Yellow"; document.getElementById('recommendationText').innerText = "Professional A3 shade. Gentle care prevents plaque buildup beautifully.";
-        } else if (l >= 72 && s <= 22) {
-            document.getElementById('mainResult').innerText = "Bright White"; document.getElementById('recommendationText').innerText = "Luminous B1 shade. Stunning enamel! Keep up the great work.";
-        } else {
-            document.getElementById('mainResult').innerText = "Natural Tone"; document.getElementById('recommendationText').innerText = "Healthy A2 shade. A perfectly natural and beautiful smile.";
+        stopCamera();
+        showView('results');
+
+        const mainResult = document.getElementById('mainResult');
+        const recommendationText = document.getElementById('recommendationText');
+
+        // 0. Shadow/Error Check
+        if (l < 35) {
+            mainResult.innerText = "Needs Light";
+            recommendationText.innerText = "Too dark! Try facing a bright window for accurate results.";
+        } 
+        // 1. Luminous White (B1 equivalent) - High brightness, very low color
+        else if (l >= 75 && s <= 18) {
+            mainResult.innerText = "Luminous White";
+            recommendationText.innerText = "Brilliant B1 shade! Stunning enamel, maintain gentle routines.";
+        }
+        // 4. Warm Yellow (A3.5/B3/A4) - Moderate/low brightness, high yellow saturation
+        else if (s > 25 && l < 70 && h > 20 && h < 70) {
+            mainResult.innerText = "Warm Yellow";
+            recommendationText.innerText = "Visible amber tones. Daily brushing prevents surface stains beautifully.";
+        }
+        // 5. Grey / Ash (C/D Shades) - Low brightness, low saturation, non-yellow hue
+        else if (s <= 20 && l < 65 && (h <= 20 || h >= 70)) {
+            mainResult.innerText = "Grey / Ash";
+            recommendationText.innerText = "Intrinsic ash tones. Healthy tooth depth without yellow.";
+        }
+        // 2. Bright Natural (A1/B2) - Very bright, but has some natural warmth
+        else if (l >= 70 && s <= 25) {
+            mainResult.innerText = "Bright Natural";
+            recommendationText.innerText = "Gorgeous A1 shade! Visibly maintained healthy enamel.";
+        } 
+        // 3. Standard Natural (A2/A3) - The healthy global average baseline
+        else {
+            mainResult.innerText = "Standard Natural";
+            recommendationText.innerText = "Baseline A2 shade. Perfectly normal, healthy depth!";
         }
     }
 
+    // Math Utility
     function rgbToHsl(r, g, b) {
-        r /= 255; g /= 255; b /= 255; const max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2;
-        if (max === min) { h = s = 0; } else {
-            const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6;
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) { h = s = 0; } 
+        else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
         }
         return [h * 360, s * 100, l * 100];
     }
 
-    function stopCamera() { if (stream) { stream.getTracks().forEach(track => track.stop()); stream = null; } video.style.display = 'block'; camCanvas.style.display = 'none'; scannerLine.style.display = 'none'; }
-    function resetApp() { stopCamera(); showView('intro'); }
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        video.style.display = 'block';
+        camCanvas.style.display = 'none';
+        scannerLine.style.display = 'none';
+    }
+
+    function resetApp() {
+        stopCamera();
+        showView('intro');
+    }
 </script>
 </body>
 </html>
